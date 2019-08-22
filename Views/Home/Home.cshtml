@@ -1,0 +1,98 @@
+@{
+    ViewData["Title"] = "VTCA";
+}
+<div class="text-center">
+    <div class="container">
+            <div class="row">
+                <h3>
+                    Xin chào, @ViewBag.Username
+                </h3>
+                <input type="button" class="btn btn-primary ml-auto" value="Đăng xuất" onclick="window.location.href = '/Home/Logout'">
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active " data-toggle="tab" href="#home">Gửi thư</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#menu1">Đã gửi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#menu2">Đã nhận</a>
+                </li>
+            </ul>
+      </div>
+
+    <div class="col-9">
+        <div class="tab-content">
+          <div id="home" class="container tab-pane active"><br>
+            <form action="/Home/Home" method="POST">
+              <div class="form-group">
+                <label >Người nhận</label>
+                <input type="text" class="form-control" name="receiver" placeholder="Nhập tên người nhận" required>
+              </div>
+              <div class="form-group">
+                <label >Tiêu đề</label>
+                <input type="text" class="form-control" name="title" placeholder="Nhập tiêu đề" required>
+              </div>
+              <div>
+                 <label>Nội dung</label>
+                 <br>
+                <textarea id="subject" class="form-control" name="content" placeholder="Nhập nội dung ...." style="height:200px" required></textarea>
+              </div>
+              <button class="btn btn-primary" id="send">Gửi</button>
+            </form>
+          </div>
+          <div id="menu1" class="container tab-pane fade"><br>
+          <form action ="/Home/Home" method="POST">
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Tên người nhận</th>
+                    <th scope="col">Tiêu đề</th>
+                    <th scope="col">Nội dung</th>
+                  </tr>
+                </thead>
+                  @if(ViewBag.listmailsend != null)
+                  {
+                    @foreach (var item in ViewBag.listmailsend)
+                    {
+                      <tbody>
+                        <tr>
+                          <td>@item.Receiver</td>
+                          <td>@item.Title</td>
+                          <td>@item.Content</td>
+                        </tr>
+                      </tbody> 
+                    }
+                  }
+              </table>
+          </div>
+          </form>
+          </div>
+          <div id="menu2" class="container tab-pane fade"><br>
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Content</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                  </tbody> 
+              </table>
+          </div>
+          </div>
+        </div>
+    </div>
+</div>

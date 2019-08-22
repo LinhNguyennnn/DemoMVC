@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="text-center">
+    <form method="post" action="/Register/Register">
+        <h2>
+            Đăng ký tài khoản
+        </h2>
+        <br> 
+        @if (ViewBag.Register == false)
+        {
+            <h5>Tài khoản đã tồn tại</h5> 
+            <br>
+        }
+        <label>
+            Tài khoản
+        </label>
+        <input type="text" name="username" required/>
+        <br>
+        <label>
+            Mật khẩu
+        </label>
+        <input type="password" name="password" id="pass" required/>
+        <br>
+        <label>
+            Nhập lại mật khẩu
+        </label>
+        <input type="password" name="password2" id="pass2" onkeyup="ConfirmPW()" required/>
+        <br>
+        <span id="errPass" style="color: red">Không trùng mật khẩu</span>
+        <br>    
+        <button id="but" onclick="register()">Đăng ký</button>
+        <br>
+        <a href="/Home/Index">Bạn đã có tài khoản?</a>
+        </form>
+</div>
