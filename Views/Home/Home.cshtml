@@ -48,25 +48,26 @@
           <div id="menu1" class="container tab-pane fade"><br>
           <form action ="/Home/Home" method="POST">
             <div class="row">
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">Tên người nhận</th>
-                    <th scope="col">Tiêu đề</th>
-                    <th scope="col">Nội dung</th>
+                    <th scope="col-4">Người nhận</th>
+                    <th scope="col-4">Tiêu đề</th>
+                    <th scope="col-4">Nội dung</th>
                   </tr>
                 </thead>
-                  @if(ViewBag.listmailsend != null)
+                  @if(ViewBag.ListMailSend != null)
                   {
-                    @foreach (var item in ViewBag.listmailsend)
+                    @foreach (var item in ViewBag.ListMailSend)
                     {
-                      <tbody>
+                          <tbody>
                         <tr>
-                          <td>@item.Receiver</td>
-                          <td>@item.Title</td>
-                          <td>@item.Content</td>
+                          <td>@item.Users.Username</td>
+                          <td class="d-inline-block text-truncate" style="max-width: 150px;">@item.Mail.Title</td>
+                          <td class="d-inline-block text-truncate" style="max-width: 150px;">@item.Mail.Content</td>
                         </tr>
                       </tbody> 
+                      
                     }
                   }
               </table>
@@ -75,21 +76,27 @@
           </div>
           <div id="menu2" class="container tab-pane fade"><br>
             <div class="row">
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Content</th>
+                    <th scope="col-4">Người gửi</th>
+                    <th scope="col-4">Tiêu đề</th>
+                    <th scope="col-4">Nội dung</th>
                   </tr>
                   </thead>
-                  <tbody>
-                          <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                  </tbody> 
+                  @if(ViewBag.ListMailReceiver != null)
+                  {
+                    @foreach (var item in ViewBag.ListMailReceiver)
+                    {
+                          <tbody>
+                        <tr>
+                          <td>@item.Users.Username</td>
+                          <td class="d-inline-block text-truncate" style="max-width: 150px;">@item.Mail.Title</td>
+                          <td class="d-inline-block text-truncate" style="max-width: 150px;">@item.Mail.Content</td>
+                        </tr>
+                      </tbody> 
+                    }
+                  }
               </table>
           </div>
           </div>

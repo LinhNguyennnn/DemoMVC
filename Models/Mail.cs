@@ -7,7 +7,6 @@ namespace DemoMVC.Models
     public class Mail
     {
         public int Mail_Id { get; set; }
-        public string Receiver {get;set;}
         public string Title { get; set; }
         public string Content { get; set; }
 

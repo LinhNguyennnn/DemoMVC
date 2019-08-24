@@ -131,13 +131,25 @@ namespace DemoMVC.Controllers
                 var user = dbContext.Users.FirstOrDefault(x => x.User_Id == Id);
                 ViewBag.Username = user.Username.ToUpper();
                 List<Mail> ListMail = new List<Mail>();
-                List<MailDetails> md = dbContext.MailDetails.FromSql(@"select * from maildetails where MailSend_Id = " + Id + ";").ToList();
-                foreach (var item in md)
+                List<Users> ListUser = new List<Users>();
+                List<MailDetails> SI = dbContext.MailDetails.FromSql(@"select * from maildetails where Sender_Id = " + Id + ";").ToList();
+                List<MailDetails> RI = dbContext.MailDetails.FromSql(@"select * from maildetails where Receiver_Id = " + Id + ";").ToList();
+                foreach (var item in SI)
                 {
-                    var listmailSend = dbContext.Mail.FirstOrDefault(x => x.Mail_Id == item.Mail_Id);
-                    ListMail.Add(listmailSend);
+                    var listMailSend = dbContext.Mail.FirstOrDefault(x => x.Mail_Id == item.Mail_Id);
+                    var ListReceiver = dbContext.Users.FirstOrDefault(x => x.User_Id == item.Receiver_Id);
+                    ListMail.Add(listMailSend);
+                    ListUser.Add(ListReceiver);
                 }
-                ViewBag.listmailsend = ListMail;
+                foreach (var item in RI)
+                {
+                    var listMailReceiver = dbContext.Mail.FirstOrDefault(x => x.Mail_Id == item.Mail_Id);
+                    var ListSender = dbContext.Users.FirstOrDefault(x => x.User_Id == item.Sender_Id);
+                    ListMail.Add(listMailReceiver);
+                    ListUser.Add(ListSender);
+                }
+                ViewBag.ListMailSend = SI;
+                ViewBag.ListMailReceiver = RI;
             }
             return View();
         }
@@ -176,8 +188,8 @@ namespace DemoMVC.Controllers
             {
                 var mail = new Mail();
                 var md = new MailDetails();
-                md.MailSend_Id = userSend.User_Id;
-                mail.Receiver = userReceiver.Username;
+                md.Sender_Id = userSend.User_Id;
+                md.Receiver_Id = userReceiver.User_Id;
                 mail.Title = title;
                 mail.Content = content;
                 md.Mail = mail;

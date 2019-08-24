@@ -57,6 +57,8 @@ body {
 
 td{
   overflow: hidden;
+  height: 100px;
+  width: 100px;
 }
 
 #errPass, #errPass2{
