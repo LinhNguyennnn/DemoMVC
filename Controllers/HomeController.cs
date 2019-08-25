@@ -180,29 +180,28 @@ namespace DemoMVC.Controllers
         [HttpPost]
         public IActionResult Home(string receiver, string title, string content)
         {
-            var userReceiver = new Users(receiver);
-            userReceiver = dbContext.Users.FirstOrDefault(x => x.Username == receiver);
-            int? id = HttpContext.Session.GetInt32("Id");
-            var userSend = dbContext.Users.FirstOrDefault(x => x.User_Id == id);
-            if (userSend != null && userReceiver != null)
+            string[] receivers = receiver.Split(',');
+            var mail = new Mail();
+            mail.Title = title;
+            mail.Content = content;
+            dbContext.Add(mail);
+            dbContext.SaveChanges();
+            foreach (var item in receivers)
             {
-                var mail = new Mail();
+                if (item == "")
+                {
+                    break;
+                }
+                Users user = dbContext.Users.FirstOrDefault(x => x.Username == item);
                 var md = new MailDetails();
-                md.Sender_Id = userSend.User_Id;
-                md.Receiver_Id = userReceiver.User_Id;
-                mail.Title = title;
-                mail.Content = content;
-                md.Mail = mail;
+                md.Sender_Id = HttpContext.Session.GetInt32("Id");
+                md.Receiver_Id = user.User_Id;
+                md.Mail_Id = mail.Mail_Id;
                 dbContext.Add(md);
                 dbContext.SaveChanges();
-                HttpContext.Session.SetString("sendmail", "true");
-                return Redirect("/Home/Home/?logged=" + true + "&Id=" + id + "/?sendmail=" + true);
             }
-            else
-            {
-                HttpContext.Session.SetString("sendmail", "false");
-                return Redirect("/Home/Home/?logged=" + true + "&Id=" + id + "/?sendmail=" + false);
-            }
+            HttpContext.Session.SetString("sendmail", "true");
+            return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/?sendmail=" + true);
         }
     }
 }

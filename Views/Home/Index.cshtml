@@ -1,14 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     @if(ViewBag.username == null)
     {
-        <form method="post" action="/Home/Login" >
+    <form method="post" action="/Home/Login">
         @if (ViewBag.Register == true)
         {
-            <h5>Tạo tài khoản thành công</h5> 
+        <h5>Tạo tài khoản thành công</h5>
         }
         <h1>
             Đăng nhập
@@ -17,23 +17,22 @@
         <label>
             Tài khoản
         </label>
-        <input type="text" name="username" id="un" required/>
+        <input type="text" name="username" id="un" required />
         <br>
         <label>
             Mật khẩu
         </label>
-        <input type="password" name="password" id="pw" required/>
+        <input type="password" name="password" id="pw" required />
         <br>
         @if (ViewBag.Error == true)
         {
-            <p>Tài khoản hoặc mật khẩu không chính xác !</p> 
-            <br>
+        <p>Tài khoản hoặc mật khẩu không chính xác !</p>
         }
-        <input type="checkbox" name="save" id="cb"/>Lưu thông tin
+        <input type="checkbox" name="save" id="cb" />Lưu thông tin
         <br>
         <button>Đăng nhập</button>
         <br>
         <a href="/Register/Register">Tạo tài khoản</a>
-        </form>
+    </form>
     }
 </div>

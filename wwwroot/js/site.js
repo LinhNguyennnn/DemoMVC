@@ -14,11 +14,37 @@ function ConfirmPW() {
         document.getElementById("but").disabled = false;
     }
 }
+var listName = document.getElementsByClassName('js-formatInputName')[0];
+var wrapCompose = document.getElementsByClassName('wrap-compose')[0];
+var NameReceiver = document.getElementsByClassName('receiver');
+listName.addEventListener('keyup', (e, v) => {
+    var userNameHtml = document.createElement("span");
+    var textnode = document.createTextNode(listName.value);
+    userNameHtml.appendChild(textnode);
+    userNameHtml.classList.add('receiver');
 
-// function CheckReceiver() {
-//     let Recei = document.getElementById("recei").value;
-//     let user = dbContext.Users.FirstOrDefault(x => x.Username == receiver);
-//     if (Recei === user.) {
-        
-//     }
-// }
+    if (e.keyCode == 13 || e.keyCode == 9 || e.w) {
+
+        wrapCompose.insertBefore(userNameHtml, wrapCompose.childNodes[NameReceiver.length + 1]);
+        listName.value = '';
+        console.log(NameReceiver.length + 1);
+        e.preventDefault();
+    } else if (e.keyCode == 8) {
+        wrapCompose.removeChild(wrapCompose.childNodes[NameReceiver.length]);
+    }
+})
+listName.addEventListener('keydown', (e) => {
+    if (e.keyCode == 9) {
+        e.preventDefault();
+    }
+})
+var btnSendEmail = document.getElementById('send');
+btnSendEmail.addEventListener('click', () => {
+    var listNameUser = '';
+    for (let i = 0; i < NameReceiver.length; i++) {
+
+        listNameUser += NameReceiver[i].innerText + ',';
+
+    }
+    document.getElementById('receiver').value = listNameUser;
+})

@@ -15,7 +15,6 @@ C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\DemoMVC.TagHelpers.input
 C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\DemoMVC.TagHelpers.output.cache
 C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\DemoMVC.RazorCoreGenerate.cache
 C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.g.cshtml.cs
-C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\Razor\Views\Home\Privacy.g.cshtml.cs
 C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Error.g.cshtml.cs
 C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_CookieConsentPartial.g.cshtml.cs
 C:\Users\lenovo\Desktop\DemoMVC\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Layout.g.cshtml.cs

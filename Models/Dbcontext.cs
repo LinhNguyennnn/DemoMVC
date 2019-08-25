@@ -31,8 +31,6 @@ namespace Models
             modelBuilder.Entity<MailDetails>(entity =>
             {
                 entity.HasKey(md => md.MailDetails_Id);
-                entity.HasOne<Users>(md => md.Users).WithMany().HasForeignKey(md => md.Sender_Id);
-                entity.HasOne<Users>(md => md.Users).WithMany().HasForeignKey(md => md.Receiver_Id);
                 entity.HasOne<Mail>(md => md.Mail).WithMany().HasForeignKey(md => md.Mail_Id);
             });
         }

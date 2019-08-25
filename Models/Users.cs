@@ -15,9 +15,5 @@ namespace DemoMVC.Models
             this.Username = username;
             this.Userpwd = userpwd;
         }
-        public Users(string username)
-        {
-            this.Username = username;
-        }
     }
 }
