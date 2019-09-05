@@ -27,10 +27,12 @@ namespace Models
                 entity.HasKey(x => x.Mail_Id);
                 entity.Property(x => x.Title);
                 entity.Property(x => x.Content);
+                entity.Property(x => x.Time);
             });
             modelBuilder.Entity<MailDetails>(entity =>
             {
                 entity.HasKey(md => md.MailDetails_Id);
+                entity.Property(md => md.Remove);
                 entity.HasOne<Mail>(md => md.Mail).WithMany().HasForeignKey(md => md.Mail_Id);
             });
         }

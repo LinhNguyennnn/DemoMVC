@@ -18,6 +18,12 @@ html {
   }
 }
 
+.contentt{
+  display: flex;
+}
+.text-center{
+  margin-top: 3rem;
+}
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
@@ -75,4 +81,21 @@ textarea
 
 #send{
   margin-top: 10px;
+}
+
+.card-link{
+  cursor: pointer;
+  margin-left: 0px !important;
+}
+
+.modal-body{
+  overflow-y: auto;
+}
+
+.maildetail{
+  display: none;
+}
+
+.huhu{
+  display: flex;
 }

@@ -14,19 +14,21 @@ ViewData["Title"] = "VTCA";
     </div>
     <div class="row">
         <div class="col-3">
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#home">Soạn thư</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#menu1">Đã gửi</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#menu2">Đã nhận
-                        <span class="badge badge-primary badge-pill">14</span>
-                    </a>
-                </li>
-            </ul>
+            <form action="/Home/Home" method="POST">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#home">Soạn thư</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="send()" data-toggle="tab" href="#menu1">Đã gửi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="receiver()" data-toggle="tab" href="#menu2">Đã nhận
+                            <span class="badge badge-primary badge-pill">14</span>
+                        </a>
+                    </li>
+                </ul>
+            </form>
         </div>
 
         <div class="col-9">
@@ -53,41 +55,92 @@ ViewData["Title"] = "VTCA";
                 </div>
                 <div id="menu1" class="container tab-pane fade"><br>
                     <form action="/Home/Home" method="POST">
-                        
-                    </form>
-                </div>
-            <div id="menu2" class="container tab-pane fade"><br>
-                <form action="/Home/Home" method="POST">
-                    <ul class="list-group">
-                        @if(ViewBag.ListMailReceiver != null)
-                        {
-                        @foreach (var item in ViewBag.ListMailReceiver){
-                        <a class="card-link" href="#detail">
-                            <li class="list-group-item">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <b class="text-dark">Người gửi: @item.Sender.Username</b>
-                                        </div>
-                                        <div class="col-7">
-                                            <b>@item.Mail.Title</b>
-                                            <span>- @item.Mail.Content</span>
-                                        </div>
-                                        <div class="col-1">
-                                            <button class="btn btn-danger">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                            </button>
+                        <div class="huhu">
+                            <p>Người nhận</p>
+                            <p>Tiêu đề</p>
+                            <p>Nội dung</p>
+                        </div>
+                        <ul class="list-group" id="hihi">
+                            @if(ViewBag.ListMailSend != null)
+                            {
+                            @foreach (var item in ViewBag.ListMailSend)
+                            {
+                            <a class="card-link"
+                                onclick="detail('@item.Receiver.Username', '@item.Mail.Title', '@item.Mail.Content')"
+                                data-toggle="modal" data-target="#detailmail" id="recivermail">
+                                <li class="list-group-item">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-4 text-truncate">
+                                                <b class="text-dark d-inline-block" id="re_name">Người
+                                                    nhận:
+                                                    @item.Receiver.Username</b>
+                                            </div>
+                                            <div class="col-7 contentt">
+                                                <div class="col-6 text-truncate"><b id="re_title">@item.Mail.Title</b>
+                                                </div>
+                                                <div class="col-6 text-truncate"><span id="re_contnent">-
+                                                        @item.Mail.Content</span></div>
+                                            </div>
+                                            <div class="col-1">
+                                                <button class="btn btn-danger" onclick="window.location.href = '/Home/RemoveSender(@item.Mail_Id)'">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                        </a>
-                        }
-                        }
-                    </ul>
-                </form>
+                                </li>
+                            </a>
+                            }
+                            }
+                        </ul>
+                    </form> 
+                </div>
+                <div id="menu2" class="container tab-pane fade"><br>
+                    <form action="/Home/Home" method="POST">
+                        <ul class="list-group" id="haha">
+                            @if(ViewBag.ListMailReceiver != null)
+                            {
+                            @foreach (var item in ViewBag.ListMailReceiver){
+                            <a class="card-link"
+                                onclick="detail('@item.Sender.Username','@item.Mail.Title', '@item.Mail.Content')"
+                                data-toggle="modal" data-target="#detailmail" id="sendmail">
+                                <li class="list-group-item">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-4 text-truncate">
+                                                <b class="text-dark">Người gửi: @item.Sender.Username</b>
+                                            </div>
+                                            <div class="col-7 contentt">
+                                                <div class="col-6 text-truncate"><b>@item.Mail.Title</b></div>
+                                                <div class="col-6 text-truncate"><span>- @item.Mail.Content</span></div>
+                                            </div>
+                                            <div class="col-1">
+                                                <button class="btn btn-danger" onclick="window.location.href = '/Home/RemoveReceiver(@item.Mail_Id)'">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            }
+                            }
+                        </ul>
+                    </form>
+                </div>
+                <div id="maildetail">
+                    <div>
+                        <h3 id="title-detail"></h3>
+                    </div>
+                    <div>
+                        <p id="receiver-detail"></p>
+                    </div>
+                    <div>
+                        <p id="content-detail"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>

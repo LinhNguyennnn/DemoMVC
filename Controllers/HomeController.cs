@@ -123,9 +123,9 @@ namespace DemoMVC.Controllers
         // }
 
         [HttpGet]
-        public IActionResult Home(bool logged, int? Id, bool sendmail)
+        public IActionResult Home(bool logged, bool sendmail)
         {
-            Id = HttpContext.Session.GetInt32("Id");
+            int? Id = HttpContext.Session.GetInt32("Id");
             if (logged == true)
             {
                 var user = dbContext.Users.FirstOrDefault(x => x.User_Id == Id);
@@ -202,6 +202,36 @@ namespace DemoMVC.Controllers
             }
             HttpContext.Session.SetString("sendmail", "true");
             return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/?sendmail=" + true);
+        }
+        public IActionResult RemoveSender(int Mail_id)
+        {
+            MailDetails Md = dbContext.MailDetails.FirstOrDefault(x => x.Mail_Id == Mail_id);
+            if (Md.Remove == 2)
+            {
+                Md.Remove = 3;
+            }
+            else
+            {
+                Md.Remove = 1;
+            }
+            dbContext.Add(Md);
+            dbContext.SaveChanges();
+            return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/#send");
+        }
+        public IActionResult RemoveReceiver(int Mail_id)
+        {
+            MailDetails Md = dbContext.MailDetails.FirstOrDefault(x => x.Mail_Id == Mail_id);
+            if (Md.Remove == 1)
+            {
+                Md.Remove = 3;
+            }
+            else
+            {
+                Md.Remove = 2;
+            }
+            dbContext.Add(Md);
+            dbContext.SaveChanges();
+            return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/#send");
         }
     }
 }
