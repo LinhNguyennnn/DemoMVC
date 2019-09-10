@@ -129,7 +129,7 @@ namespace DemoMVC.Controllers
             if (logged == true)
             {
                 var user = dbContext.Users.FirstOrDefault(x => x.User_Id == Id);
-                ViewBag.Username = user.Username.ToUpper();
+                ViewBag.Username = user.Username;
                 List<Mail> ListMail = new List<Mail>();
                 List<Users> ListUser = new List<Users>();
                 List<MailDetails> SI = dbContext.MailDetails.FromSql(@"select * from maildetails where Sender_Id = " + Id + ";").ToList();
@@ -150,6 +150,10 @@ namespace DemoMVC.Controllers
                 }
                 ViewBag.ListMailSend = SI;
                 ViewBag.ListMailReceiver = RI;
+                List<MailDetails> abc = new List<MailDetails>();
+                abc.AddRange(SI);
+                abc.AddRange(RI);
+                ViewBag.ListMailinTrash = abc;
             }
             return View();
         }
@@ -184,6 +188,7 @@ namespace DemoMVC.Controllers
             var mail = new Mail();
             mail.Title = title;
             mail.Content = content;
+            mail.Time = DateTime.Now;
             dbContext.Add(mail);
             dbContext.SaveChanges();
             foreach (var item in receivers)
@@ -193,6 +198,11 @@ namespace DemoMVC.Controllers
                     break;
                 }
                 Users user = dbContext.Users.FirstOrDefault(x => x.Username == item);
+                if (user == null)
+                {
+                    HttpContext.Session.SetString("sendmail", "false");
+                    return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/?sendmail=" + false);
+                }
                 var md = new MailDetails();
                 md.Sender_Id = HttpContext.Session.GetInt32("Id");
                 md.Receiver_Id = user.User_Id;
@@ -205,7 +215,7 @@ namespace DemoMVC.Controllers
         }
         public IActionResult RemoveSender(int Mail_id)
         {
-            MailDetails Md = dbContext.MailDetails.FirstOrDefault(x => x.Mail_Id == Mail_id);
+            var Md = dbContext.MailDetails.FirstOrDefault(x => x.Mail_Id == Mail_id);
             if (Md.Remove == 2)
             {
                 Md.Remove = 3;
@@ -214,13 +224,12 @@ namespace DemoMVC.Controllers
             {
                 Md.Remove = 1;
             }
-            dbContext.Add(Md);
             dbContext.SaveChanges();
             return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/#send");
         }
         public IActionResult RemoveReceiver(int Mail_id)
         {
-            MailDetails Md = dbContext.MailDetails.FirstOrDefault(x => x.Mail_Id == Mail_id);
+            var Md = dbContext.MailDetails.FirstOrDefault(x => x.Mail_Id == Mail_id);
             if (Md.Remove == 1)
             {
                 Md.Remove = 3;
@@ -229,9 +238,8 @@ namespace DemoMVC.Controllers
             {
                 Md.Remove = 2;
             }
-            dbContext.Add(Md);
             dbContext.SaveChanges();
-            return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/#send");
+            return Redirect("/Home/Home/?logged=" + true + "&Id=" + HttpContext.Session.GetInt32("Id") + "/#receiver");
         }
     }
 }

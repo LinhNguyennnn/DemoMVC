@@ -91,11 +91,20 @@ textarea
 .modal-body{
   overflow-y: auto;
 }
-
-.maildetail{
+#maildetail{
   display: none;
+  text-align: start;
 }
 
-.huhu{
-  display: flex;
+.hd{
+  font-weight: bold;
+  font-size: 18px;
+  border : 1px solid black;
+} 
+
+.receiver {
+  margin-right: 5px;
+  border: 1px solid black;
+  display: inline-block;
+  padding: 6px;
 }

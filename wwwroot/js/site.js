@@ -62,7 +62,15 @@ function detail(re_name, mail_title, mail_content) {
     document.getElementById("content-detail").innerHTML = mail_content;
     document.getElementById("hihi").style.display = "none";
     document.getElementById("haha").style.display = "none";
+    document.getElementById("restore").style.display = "none";
     document.getElementById("maildetail").style.display = "block";
+}
+
+function start() {
+    document.getElementById("title-detail").innerHTML = null;
+    document.getElementById("receiver-detail").innerHTML = null;
+    document.getElementById("content-detail").innerHTML = null;
+    document.getElementById("maildetail").style.display = "none";
 }
 
 function send() {
@@ -78,5 +86,13 @@ function receiver() {
     document.getElementById("receiver-detail").innerHTML = null;
     document.getElementById("content-detail").innerHTML = null;
     document.getElementById("haha").style.display = "block";
+    document.getElementById("maildetail").style.display = "none";
+}
+
+function restore() {
+    document.getElementById("title-detail").innerHTML = null;
+    document.getElementById("receiver-detail").innerHTML = null;
+    document.getElementById("content-detail").innerHTML = null;
+    document.getElementById("restore").style.display = "block";
     document.getElementById("maildetail").style.display = "none";
 }

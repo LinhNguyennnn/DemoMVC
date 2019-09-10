@@ -17,15 +17,16 @@ ViewData["Title"] = "VTCA";
             <form action="/Home/Home" method="POST">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#home">Soạn thư</a>
+                        <a class="nav-link active" onclick="start()" data-toggle="tab" href="#home">Soạn thư</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="send()" data-toggle="tab" href="#menu1">Đã gửi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="receiver()" data-toggle="tab" href="#menu2">Đã nhận
-                            <span class="badge badge-primary badge-pill">14</span>
-                        </a>
+                        <a class="nav-link" onclick="receiver()" data-toggle="tab" href="#menu2">Đã nhận</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="restore()" data-toggle="tab" href="#menu3">Thùng rác</a>
                     </li>
                 </ul>
             </form>
@@ -35,8 +36,9 @@ ViewData["Title"] = "VTCA";
             <div class="tab-content">
                 <div id="home" class="container tab-pane active"><br>
                     <form action="/Home/Home" method="POST">
+                        <p>Người nhận</p>
                         <div class="form-group wrap-compose d-flex flex-wrap align-items-center">
-                            <label>Người nhận</label>
+                            <span></span>
                             <textarea id="receiver" name="receiver" placeholder="Nhập tên người nhận"
                                 class="form-control js-formatInputName receiver"></textarea>
                         </div>
@@ -54,17 +56,15 @@ ViewData["Title"] = "VTCA";
                     </form>
                 </div>
                 <div id="menu1" class="container tab-pane fade"><br>
-                    <form action="/Home/Home" method="POST">
-                        <div class="huhu">
-                            <p>Người nhận</p>
-                            <p>Tiêu đề</p>
-                            <p>Nội dung</p>
-                        </div>
-                        <ul class="list-group" id="hihi">
+                    <form action="/Home/Home" method="POST" id="hihi">
+                        <ul class="list-group">
                             @if(ViewBag.ListMailSend != null)
                             {
                             @foreach (var item in ViewBag.ListMailSend)
                             {
+                            @if (item.Remove == 1 || item.Remove == 3)
+                            {}
+                            else{
                             <a class="card-link"
                                 onclick="detail('@item.Receiver.Username', '@item.Mail.Title', '@item.Mail.Content')"
                                 data-toggle="modal" data-target="#detailmail" id="recivermail">
@@ -72,8 +72,7 @@ ViewData["Title"] = "VTCA";
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-4 text-truncate">
-                                                <b class="text-dark d-inline-block" id="re_name">Người
-                                                    nhận:
+                                                <b class="text-dark d-inline-block" id="re_name">Người nhận:
                                                     @item.Receiver.Username</b>
                                             </div>
                                             <div class="col-7 contentt">
@@ -83,7 +82,8 @@ ViewData["Title"] = "VTCA";
                                                         @item.Mail.Content</span></div>
                                             </div>
                                             <div class="col-1">
-                                                <button class="btn btn-danger" onclick="window.location.href = '/Home/RemoveSender(@item.Mail_Id)'">
+                                                <button class="btn btn-danger"
+                                                    onclick="window.location.href = '/Home/RemoveSender?Mail_id=@item.Mail_Id'">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -93,15 +93,19 @@ ViewData["Title"] = "VTCA";
                             </a>
                             }
                             }
+                            }
                         </ul>
-                    </form> 
+                    </form>
                 </div>
                 <div id="menu2" class="container tab-pane fade"><br>
-                    <form action="/Home/Home" method="POST">
-                        <ul class="list-group" id="haha">
+                    <form action="/Home/Home" method="POST" id="haha">
+                        <ul class="list-group">
                             @if(ViewBag.ListMailReceiver != null)
                             {
                             @foreach (var item in ViewBag.ListMailReceiver){
+                            @if (item.Remove == 2 || item.Remove == 3)
+                            {}
+                            else{
                             <a class="card-link"
                                 onclick="detail('@item.Sender.Username','@item.Mail.Title', '@item.Mail.Content')"
                                 data-toggle="modal" data-target="#detailmail" id="sendmail">
@@ -116,7 +120,8 @@ ViewData["Title"] = "VTCA";
                                                 <div class="col-6 text-truncate"><span>- @item.Mail.Content</span></div>
                                             </div>
                                             <div class="col-1">
-                                                <button class="btn btn-danger" onclick="window.location.href = '/Home/RemoveReceiver(@item.Mail_Id)'">
+                                                <button class="btn btn-danger"
+                                                    onclick="window.location.href = '/Home/RemoveReceiver?Mail_id=@item.Mail_Id'">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -126,6 +131,68 @@ ViewData["Title"] = "VTCA";
                             </a>
                             }
                             }
+                            }
+                        </ul>
+                    </form>
+                </div>
+                <div id="menu3" class="container tab-pane fade"><br>
+                    <form action="/Home/Home" method="POST" id="restore">
+                        <ul class="list-group">
+                            @if(ViewBag.ListMailinTrash != null)
+                            {
+                            @foreach (var item in ViewBag.ListMailinTrash){
+                            @if (item.Remove == 1 || item.Remove == 3){
+                            @if (item.Sender.Username == ViewBag.Username)
+                            {
+                            <a class="card-link"
+                                onclick="detail('@item.Sender.Username','@item.Mail.Title', '@item.Mail.Content')"
+                                data-toggle="modal" data-target="#detailmail" id="trash">
+                                <li class="list-group-item">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-4 text-truncate">
+                                                <b class="text-dark">@item.Receiver.Username</b>
+                                            </div>
+                                            <div class="col-7 contentt">
+                                                <div class="col-6 text-truncate"><b>@item.Mail.Title</b></div>
+                                                <div class="col-6 text-truncate"><span>- @item.Mail.Content</span></div>
+                                            </div>
+                                            <div class="col-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            }
+                            else{}
+                            }
+                            @if (item.Remove == 2 || item.Remove == 3){
+                            @if (item.Receiver.Username == ViewBag.Username)
+                            {
+                            <a class="card-link"
+                                onclick="detail('@item.Sender.Username','@item.Mail.Title', '@item.Mail.Content')"
+                                data-toggle="modal" data-target="#detailmail" id="trash2">
+                                <li class="list-group-item">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-4 text-truncate">
+                                                <b class="text-dark">@item.Sender.Username</b>
+                                            </div>
+                                            <div class="col-7 contentt">
+                                                <div class="col-6 text-truncate"><b>@item.Mail.Title</b></div>
+                                                <div class="col-6 text-truncate"><span>- @item.Mail.Content</span></div>
+                                            </div>
+                                            <div class="col-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            }
+                            else{}
+                            }
+                            }
+                            }
                         </ul>
                     </form>
                 </div>
@@ -133,9 +200,11 @@ ViewData["Title"] = "VTCA";
                     <div>
                         <h3 id="title-detail"></h3>
                     </div>
+                    <hr>
                     <div>
-                        <p id="receiver-detail"></p>
+                        <h5 id="receiver-detail"></h5>
                     </div>
+                    <hr>
                     <div>
                         <p id="content-detail"></p>
                     </div>
